@@ -1,0 +1,128 @@
+﻿
+@model PagedList.IPagedList<OrderProcessing.Models.Order>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Order List</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+@*<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.9/css/jquery.dataTables.min.css">*@
+
+@using (Html.BeginForm("Index", "Order", FormMethod.Get))
+{
+    <p>
+        Search Name: @Html.TextBox("Search_Data", ViewBag.FilterValue as string)
+        <input type="submit" value="Find" />
+    </p>
+}
+
+
+<table id="example" class="table table-striped table-bordered" style="width:100%">
+    <thead>
+        <tr>
+            <th>
+                @Html.ActionLink("CompanyName", "Index", new { Sorting_Order = ViewBag.SortingName, Filter_Value = ViewBag.FilterValue })
+                @*@Html.DisplayNameFor(model => model.Customer.CompanyName)*@
+            </th>
+            <th>
+                LastName
+            </th>
+            <th>
+                @Html.ActionLink("Order Date", "Index", new { Sorting_Order = ViewBag.SortingDate, Filter_Value = ViewBag.FilterValue })
+                @*@Html.DisplayNameFor(model => model.OrderDate)*@
+            </th>
+            <th>
+                RequiredDate
+            </th>
+            <th>
+                ShippedDate
+            </th>
+            <th>
+                Shipper.CompanyName
+            </th>
+            <th>
+                Freight
+            </th>
+            <th>
+                ShipName
+            </th>
+            <th>
+                ShipAddress
+            </th>
+            <th>
+                ShipCity
+            </th>
+            <th>
+                ShipRegion
+            </th>
+            <th>
+                ShipPostalCode
+            </th>
+            <th>
+                ShipCountry
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Customer.CompanyName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Employee.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RequiredDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShippedDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Shipper.CompanyName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Freight)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShipName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShipAddress)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShipCity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShipRegion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShipPostalCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShipCountry)
+                </td>
+                <td>
+                  
+                    @Html.ActionLink("Details", "Details", new { id = item.OrderID }) |
+                   
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, Page_No => Url.Action("Index",
+    new { Page_No, Sorting_Order = ViewBag.CurrentSortOrder, Filter_Value = ViewBag.FilterValue }))
